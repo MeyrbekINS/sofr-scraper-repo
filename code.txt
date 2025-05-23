@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "--- Starting Network Diagnostics ---"
+      - echo "Attempting to ping google.com..."
+      - ping -c 3 google.com
+      - echo "Attempting to resolve ECR DNS: dkr.ecr.eu-north-1.amazonaws.com"
+      - nslookup dkr.ecr.eu-north-1.amazonaws.com
+      - echo "Attempting to resolve ECR API DNS: api.ecr.eu-north-1.amazonaws.com"
+      - nslookup api.ecr.eu-north-1.amazonaws.com
+      - echo "--- End of Network Diagnostics ---"
+      # Commenting out the ECR login for this test
+      # - echo Logging in to Amazon ECR...
+      # - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  build:
+    commands:
+      - echo "Skipping Docker build for network test."
+  post_build:
+    commands:
+      - echo "Skipping Docker push for network test."
+
+# No artifacts needed for this test
