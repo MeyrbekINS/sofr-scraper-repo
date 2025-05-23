@@ -1,0 +1,18 @@
+version: 0.2
+  phases:
+    install:
+      commands:
+        - echo "Isntalling network utilities"
+        - apt-get update -y
+        - apt-get install -y iputils-ping dnsutils
+    pre_build:
+      commands:
+        - echo "Running network diagnostics"
+        - 'ping -c 1 google.com'
+        - 'nslookup dkr.ecr.eu-north-1.amazonaws.com'
+    build:
+      commands:
+        - echo "Build phase - if nslookup with 8.8.8.8 works, we will try ECR login"
+    post_build:
+      commands:
+        - echo "Post-build phase"
