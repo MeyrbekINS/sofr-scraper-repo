@@ -1,9 +1,7 @@
 version: 0.2
 
 phases:
-  install: # Added install phase
-    runtime-versions: # Optional: specify runtime if needed, but usually not for apt-get
-      # nodejs: 16 # Example if you needed a specific Node.js version
+  install:
     commands:
       - echo "Installing network utilities..."
       - apt-get update -y
