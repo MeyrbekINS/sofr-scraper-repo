@@ -1,7 +1,15 @@
 version: 0.2
 
 phases:
+  pre_build: # We'll use pre_build for these tests
+    commands:
+      - echo "--- Starting Network Diagnostics ---"
+      - echo "Attempting to ping google.com..."
+      - 'ping -c 3 google.com'
+      - echo "--- Ping Test Complete ---"
   build:
     commands:
-      - echo "This is a minimal buildspec test."
-      - echo "If this works, the problem is with more complex commands or structure."
+      - echo "Skipping Docker build for this network test."
+  post_build:
+    commands:
+      - echo "Skipping Docker push for this network test."
