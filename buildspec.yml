@@ -1,19 +1,7 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - echo "--- Starting Network Diagnostics ---"
-      - echo "Attempting to ping google.com (command index 0)"
-      - 'ping -c 3 google.com'  # Enclosed in single quotes
-      - echo "Attempting to resolve ECR DNS: dkr.ecr.eu-north-1.amazonaws.com (command index 1)"
-      - 'nslookup dkr.ecr.eu-north-1.amazonaws.com' # Enclosed in single quotes
-      - echo "Attempting to resolve ECR API DNS: api.ecr.eu-north-1.amazonaws.com (command index 2)"
-      - 'nslookup api.ecr.eu-north-1.amazonaws.com' # Enclosed in single quotes
-      - echo "--- End of Network Diagnostics ---"
   build:
     commands:
-      - echo "Skipping Docker build for network test."
-  post_build:
-    commands:
-      - echo "Skipping Docker push for network test."
+      - echo "This is a minimal buildspec test."
+      - echo "If this works, the problem is with more complex commands or structure."
