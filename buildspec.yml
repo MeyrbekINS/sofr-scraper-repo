@@ -1,12 +1,23 @@
 version: 0.2
 
 phases:
-  pre_build: # We'll use pre_build for these tests
+  install: # Added install phase
+    runtime-versions: # Optional: specify runtime if needed, but usually not for apt-get
+      # nodejs: 16 # Example if you needed a specific Node.js version
+    commands:
+      - echo "Installing network utilities..."
+      - apt-get update -y
+      - apt-get install -y iputils-ping dnsutils # iputils-ping provides ping, dnsutils provides nslookup
+  pre_build:
     commands:
       - echo "--- Starting Network Diagnostics ---"
       - echo "Attempting to ping google.com..."
       - 'ping -c 3 google.com'
-      - echo "--- Ping Test Complete ---"
+      - echo "Attempting to resolve ECR DNS: dkr.ecr.eu-north-1.amazonaws.com"
+      - 'nslookup dkr.ecr.eu-north-1.amazonaws.com'
+      - echo "Attempting to resolve ECR API DNS: api.ecr.eu-north-1.amazonaws.com"
+      - 'nslookup api.ecr.eu-north-1.amazonaws.com'
+      - echo "--- Network Diagnostics Complete ---"
   build:
     commands:
       - echo "Skipping Docker build for this network test."
