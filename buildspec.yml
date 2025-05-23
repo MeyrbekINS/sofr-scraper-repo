@@ -10,7 +10,7 @@
         - echo "Running network diagnostics"
         - 'ping -c 1 google.com'
         - echo "Attempting nslookup for ECR using default DNS" 
-        - 'nslookup dkr.ecr.eu-north-1.amazonaws.com'
+        - 'nslookup dkr.ecr.eu-north-1.amazonaws.com || true'
         - echo "Attempting nslookup for ECR using Google DNS (8.8.8.8)"
         - 'nslookup dkr.ecr.eu-north-1.amazonaws.com 8.8.8.8'
     build:
