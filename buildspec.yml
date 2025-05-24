@@ -9,9 +9,14 @@
       commands:
         - echo "Logging in to Amazon ECR..."
         - ECR_REGION="eu-north-1"
-        - ECR_REGISTRY_URL="305362906248.dkr.ecr.${ECR_REGION}.amazonaws.com"
+        - AWS_ACCOUNT_ID="305362906248"
+        - ECR_REPOSITORY_NAME="sofr-scraper"
+
+        - ECR_REGISTRY_URL="${AWS_ACCOUNT_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com"
+        
         - aws ecr get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY_URL}
-        - REPOSITORY_URI="${ECR_REGISTRY_URL}/sofr-scraper"
+        
+        - REPOSITORY_URI="${ECR_REGISTRY_URL}/${ECR_REPOSITORY_NAME}"
         - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
         - IMAGE_TAG=${IMAGE_TAG:-latest}
     build:
