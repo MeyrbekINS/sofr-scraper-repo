@@ -2,20 +2,33 @@
   phases:
     install:
       commands:
-        - echo "Isntalling network utilities"
+        - echo "Isntalling docker.io if not present, and network utilities"
         - apt-get update -y
         - apt-get install -y iputils-ping dnsutils docker.io
     pre_build:
       commands:
-        - echo "Running network diagnostics"
-        - 'ping -c 1 google.com || true'
-        - echo "Attempting nslookup for YOUR_ACCOUNT_ID.dkr.eu-north-1 (Google DNS)" 
-        - 'nslookup 305362906248.dkr.ecr.eu-north-1.amazonaws.com || true'
+        - echo "Logging in to Amazon ECR..."
+        - aws ecr get-login-password --region $AWS_REGION_DEFAULT | docker login --username AWS --password-stdin 305362906248.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+        - REPOSITORY_URI=305362906248.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/sofr-scraper
+        - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+        - IMAGE_TAG=${IMAGE_TAG:-latest}
     build:
       commands:
-        - echo "Attempting ECR Login"
-        - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 305362906248.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-        - echo "ECR Login attempt finished. If succesful, will proceed to build."
+        - echo "Build started on `date`"
+        - echo "Building the Docker image..."
+        - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+        - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
     post_build:
       commands:
-        - echo "Post-build phase. If image built, would push here."
+        - echo "Build completed on `date`"
+        - echo "Pushing the Docker image to ECR..."
+        - docker push $REPOSITORY_URI:$IMAGE_TAG
+        - docker push $REPOSITORY_URI:latest
+        - echo "Writing image definitions file..."
+        - printf '[{"name":"sofr-scraper-container","imageUri":"%s"}]'
+  $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+
+  artifacts: 
+    files:
+      - imagedefinitions.json
+        
