@@ -27,7 +27,6 @@
         - echo "Writing image definitions file..."
         - printf '[{"name":"sofr-scraper-container","imageUri":"%s"}]'
   $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-
   artifacts: 
     files:
       - imagedefinitions.json
