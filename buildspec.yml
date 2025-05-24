@@ -1,0 +1,21 @@
+  version: 0.2
+  phases:
+    install:
+      commands:
+        - echo "Isntalling network utilities"
+        - apt-get update -y
+        - apt-get install -y iputils-ping dnsutils docker.io
+    pre_build:
+      commands:
+        - echo "Running network diagnostics"
+        - 'ping -c 1 google.com || true'
+        - echo "Attempting nslookup for YOUR_ACCOUNT_ID.dkr.eu-north-1 (Google DNS)" 
+        - 'nslookup 305362906248.dkr.ecr.eu-north-1.amazonaws.com || true'
+    build:
+      commands:
+        - echo "Attempting ECR Login"
+        - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 305362906248.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+        - echo "ECR Login attempt finished. If succesful, will proceed to build."
+    post_build:
+      commands:
+        - echo "Post-build phase. If image built, would push here."
