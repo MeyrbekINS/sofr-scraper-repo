@@ -9,10 +9,14 @@
       commands:
         - echo "Running network diagnostics"
         - 'ping -c 1 google.com'
-        - echo "Attempting nslookup for ECR using default DNS" 
+        - echo "Attempting nslookup for ECR eu-north-1 (default DNS)" 
         - 'nslookup dkr.ecr.eu-north-1.amazonaws.com || true'
-        - echo "Attempting nslookup for ECR using Google DNS (8.8.8.8)"
-        - 'nslookup dkr.ecr.eu-north-1.amazonaws.com 8.8.8.8'
+        - echo "Attempting nslookup for ECR eu-north-1 (Google DNS)"
+        - 'nslookup dkr.ecr.eu-north-1.amazonaws.com 8.8.8.8 || true'
+        - echo "Attempting nslookup for ECR API eu-north-1 (Google DNS)"
+        - 'nslookup api.ecr.eu-north-1.amazonaws.com 8.8.8.8 || true'
+        - echo "Attempting nslookup for ECR us-east-1 (Google DNS) - For comparison"
+        - 'nslookup dkr.ecr.us-east-1.amazonaws.com 8.8.8.8 || true'
     build:
       commands:
         - echo "Build phase - if nslookup with 8.8.8.8 works, we will try ECR login"
