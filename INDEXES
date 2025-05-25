@@ -1,0 +1,9 @@
+        'Overnight SOFR': {'metricId': 'SOFR_Overnight', 'unit': '%'},
+        '1M SOFR': {'metricId': 'SOFR_1M_Term', 'unit': '%'},
+        '3M SOFR': {'metricId': 'SOFR_3M_Term', 'unit': '%'},
+        '6M SOFR': {'metricId': 'SOFR_6M_Term', 'unit': '%'},
+        '1Y SOFR': {'metricId': 'SOFR_1Y_Term', 'unit': '%'},
+        '30-Day Avg SOFR': {'metricId': 'SOFR_30D_Avg', 'unit': '%'},
+        '90-Day Avg SOFR': {'metricId': 'SOFR_90D_Avg', 'unit': '%'},
+        '180-Day Avg SOFR': {'metricId': 'SOFR_180D_Avg', 'unit': '%'},
+        'SOFR Index': {'metricId': 'SOFR_Index', 'unit': None} # No unit for index
