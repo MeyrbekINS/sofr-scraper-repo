@@ -46,6 +46,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the script into the container at /app
 COPY CMESOFR.py .
+COPY CNBC_US10YTIP_History.py
 
 # Make Python output unbuffered, which is useful for logging in Fargate/CloudWatch
 ENV PYTHONUNBUFFERED 1
