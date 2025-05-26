@@ -2,3 +2,4 @@ pandas
 selenium
 webdriver-manager
 boto3
+requests
